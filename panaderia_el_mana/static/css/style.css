@@ -1,0 +1,171 @@
+hr {
+    color: black;
+    align-items: center;
+}
+nav {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #FCEBD4;
+}
+.container-fluid {
+    display: block !important;
+}
+#navCont {
+    display: flex;
+    justify-content: space-between;
+}
+#navCont a {
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+nav a {
+    color: #FCEBD4 !important;
+}
+body {
+    /* background-image: url(../img/panaderia6.jpg); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    color: white;
+}
+header {
+    text-align: center;
+    backdrop-filter: brightness(60%);
+    -webkit-backdrop-filter: brightness(60%);
+}
+section#atributos {
+    background-color: #fff;
+    color: #29292A;
+    text-align: center;
+}
+section#atributos img {
+    margin-top: 8px;
+    height: 50px;
+    width: auto;
+}
+h3.m-0 {
+    font-family: Sans-serif !important;
+    font-size: 26px !important;
+}
+/* header div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+} */
+article {
+    display: flex;
+    justify-content: space-between;
+}
+article div p:first-child {
+    font-size: 28px;
+    font-weight: bold;
+}
+main {
+    background-color: #f4ede4;
+}
+main p, h5, small {
+    color: #503a28 !important;
+}
+img.imagen {
+    box-shadow: 0 0 20px 0 #b1957b;
+    border-radius: 5px;
+    height: auto;
+}
+.h-100 {
+    box-shadow: 0 0 20px 0 #b1957b !important;
+}
+footer {
+    background-color: #784B2A;
+    color: #AB907C !important;
+}
+#preFooter {
+    background-color: #AB907C;
+    color: #784B2A;
+    text-align: center;
+}
+#preFooter p:first-child {
+    font-size: 50px;
+    font-weight: bold;
+}
+/* DE PRODUCTOS HTML */
+.carousel .carousel-control-next-icon, .carousel .carousel-control-prev-icon {
+    filter: invert(1) grayscale(100);
+}
+.carousel .carousel-control-next {
+    justify-content: end;
+}
+.carousel .carousel-control-prev{
+    justify-content: start;
+}
+.carousel .carousel-indicators {
+    filter: invert(1) grayscale(100);
+}
+#cabecera, .cabecera {
+    text-align: center;
+    color: #503a28;
+    font-weight: bold;
+    font-size: 34px;
+}
+/* .fila {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    font-weight: bold;
+} */
+/* DE INICIAR SESION HTML */
+.card {
+    box-shadow: 0 0 20px 0 #b1957b;
+    background-color: #fff;
+    border-radius: 10px;
+}
+legend {
+    text-align: center;
+}
+form input.btn {
+    background-color: #784B2A;
+    border: #000;
+}
+form input.btn:active, input.btn:hover {
+    background-color: #503a28 !important;
+    border: #000 !important;
+}
+form a {
+    color: #784B2A;
+}
+
+@media (min-width: 768px) {
+    .container-fluid {
+        display: flex !important;
+    }
+    #navbarNav {
+        justify-content: end;
+    }
+    article {
+        flex-direction: row;
+    }
+}
+@media (max-width: 1200px) {
+    article {
+        flex-direction: column;
+    }
+    img.imagen {
+        max-width: 100%;
+    }
+    section#atributos img {
+        margin-top: 0;
+    }
+    h3.m-0 {
+        margin-top: 8px !important;
+    }
+}
+@media (max-width: 768px) {
+    body {
+        background-size: cover;
+        background-size: 800px 500px;
+    }
+    section#atributos img {
+        margin-top: 0;
+    }
+}

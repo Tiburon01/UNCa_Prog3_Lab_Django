@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/Logo_El-Mana.png' %}" type="image/x-icon">
+    <style>
+        body {
+            background-image: url("{% static 'img/panaderia6.jpg' %}");
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark px-3">
+        <div class="container-fluid">
+            <div id="navCont">
+                <a class="navbar-brand" href="{% url 'home' %}">EL MANA</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ventas:home' %}">Ventas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li>
+                </ul>
+            </div>
+        </div>        
+    </nav>
+    <header>
+        <div class="mx-5 px-5 pt-5">
+            <h1>Panaderia y pasteleria El Mana</h1>
+            <img src="{% static 'img/Logo_El-Mana_Sin-Fondo.png' %}" alt="Logo de El Mana" title="Panaderia El Mana" width="250" height="250">
+        </div>
+    </header>
+    <div>{% block contenido_principal %} {% endblock %}</div>
+    <div class="py-5" id="preFooter">
+        <p>EL MANA</p>
+        <p>© Panadería y Pastelería El Mana – 2024</p>    
+    </div>
+    <footer class="px-5 py-3">
+        <p class="m-0">© Panadería y Pastelería El Mana – 2024</p>    
+    </footer>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

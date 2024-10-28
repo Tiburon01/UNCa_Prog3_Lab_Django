@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Panaderia El Mana{% endblock %}
+{% block contenido_principal %}
+    <section class="py-4" id="atributos">
+        <div class="container-xl">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-xl-3">
+                    <div class="row">
+                        <img src="{% static 'img/iconoAtributo1.png' %}" alt="">
+                        <div class="col">
+                            <h3 class="m-0">Ingredientes frescos</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="row">
+                        <img src="{% static 'img/iconoAtributo2.png' %}" alt="">
+                        <div class="col">
+                            <h3 class="m-0">Panaderos expertos</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="row">
+                        <img src="{% static 'img/iconoAtributo3.png' %}" alt="">
+                        <div class="col">
+                            <h3 class="m-0">Años de experiencia</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="row">
+                        <img src="{% static 'img/iconoAtributo4.png' %}" alt="">
+                        <div class="col">
+                            <h3 class="m-0">Delicias dulces y saladas</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <main class="pb-5">
+        <div class="container-fluid p-0">
+            <section class="mx-5 px-5">
+                <article class="pt-5">
+                    <div class="px-5">
+                        <p>Historia de El Mana</p>
+                        <p>La historia y el nombre tienen su origen en las Islas Canarias, donde nace en el año 2010 como una panadería tradicional.
+                            Años después, tomando como inspiración la tradición valenciana del “esmorzaret”, se decide evolucionar la marca hacia un concepto
+                            innovador de cafetería-panadería y exportarla a la península, al mismo corazón de Valencia.</p>
+                        <p>Desde entonces, El Mana ha florecido, expandiéndose y combinando la especialización en pan de autor con una deliciosa
+                            variedad de opciones dulces y saladas, convirtiéndose así en el lugar perfecto para disfrutar de un buen almuerzo y mucho más.</p>
+                    </div>
+                    <div class="px-5">
+                        <img class="imagen" src="{% static 'img/panaderia3.jpg' %}" alt="">
+                    </div>
+                </article>
+                <article class="pt-5">
+                    <div class="px-5">
+                        <img class="imagen" src="{% static 'img/panaderia5.jpg' %}" alt="" width="600px">
+                    </div>
+                    <div class="px-5">
+                        <p>Trabajamos a diario para ofrecerte ingredientes de calidad que aportan los sabores más auténticos y lo hacemos con la naturalidad
+                            de una marca 100% nacional.</p>
+                        <p>Nuestras ensaladas que preparamos en el momento para ti son ricas y frescas. Pollo y pasta, césar, queso de cabra, salmón ahumado
+                            y la clásica Mediterránea, claro. El arte está en la combinación de ingredientes y en un buen aliño. 
+                        <p>Nuestras ensaladas se disfrutan de verdad.</p>
+                        <p>¿Prefieres un sándwich o una tosta? Sin problema.</p>
+                        <p>Tenemos una gran variedad de recetas nutritivas donde el sabor es el ingrediente principal. De esas que te hacen preguntarte:
+                            “¿pero por qué a mí no me quedan igual en casa?”.</p>
+                    </div>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <h1>Pagina principal HOME</h1>
+{% endblock %}
