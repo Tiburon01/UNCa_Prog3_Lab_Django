@@ -1,5 +1,6 @@
+from django.forms import inlineformset_factory
 from django import forms
-from .models import Venta, Mayorista, Empleado, Producto
+from .models import Venta, DetalleVenta
 
 class VentaForm(forms.ModelForm):
     class Meta:
@@ -10,10 +11,24 @@ class VentaForm(forms.ModelForm):
             'tipo_comprobante',
             'numero_comprobante',
             'observaciones',
-            # 'empleado',
-            # 'mayorista',
+            'precio_total',
+            'empleado',
+            'mayorista',
             # 'producto',
         ]
+
+class DetalleVentaForm(forms.ModelForm):
+    class Meta:
+        model = DetalleVenta
+        fields = [
+            # 'venta',
+            'producto',
+            'cantidad',
+        ]
+
+DetalleVentaFormSet = inlineformset_factory(Venta, DetalleVenta, form=DetalleVentaForm, extra=1, can_delete=True)
+# crea un formset en línea para manejar instancias de DetalleVenta hasta el numero indicado en extra # permite que todos los formularios de DetalleVenta se vinculen automáticamente a una instancia específica de Venta.
+
 
 # class MayoristaForm(forms.ModelForm):
 #     class Meta:

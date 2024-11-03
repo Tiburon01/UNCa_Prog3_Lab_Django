@@ -28,6 +28,7 @@ body {
     color: white;
 }
 header {
+    /* border-bottom: 1px solid #784B2A; */
     text-align: center;
     backdrop-filter: brightness(60%);
     -webkit-backdrop-filter: brightness(60%);

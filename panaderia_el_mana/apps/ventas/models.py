@@ -12,11 +12,11 @@ class Empleado(models.Model):
     cuit = models.CharField(max_length=11, unique=True)
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
-    telefonos = models.CharField(max_length=15)
+    telefono = models.CharField(max_length=15)
     domicilio = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField()
     fecha_ingreso = models.DateField()
-    estado = models.CharField(max_length=10, choices=ESTADO_EMPLEADO, default='Activo')
+    estado = models.CharField(choices=ESTADO_EMPLEADO, default='Activo')
 
     def __str__(self):
         return f"{self.apellido}, {self.nombre}"
@@ -35,18 +35,18 @@ class Mayorista(models.Model):
     id_mayorista = models.AutoField(primary_key=True)
     cuit = models.CharField(max_length=11, unique=True)
     razon_social = models.CharField(max_length=30)
-    direccion= models.TextField(max_length=50)
+    direccion= models.CharField(max_length=50)
     telefono= models.CharField(max_length=20)
     email= models.CharField(max_length=50)
-    estado=models.CharField(choices=ESTADO_MAYORISTA)
+    estado=models.CharField(choices=ESTADO_MAYORISTA, default='Activo')
 
     def __str__(self):
         return self.razon_social
     
 class Producto(models.Model):
     CATEGORIA_PRODUCTO = [
-        ('PAN', 'Panificación'),
-        ('PAS', 'Pastelería'),
+        ('PANIFICACION', 'Panificación'),
+        ('PASTELERIA', 'Pastelería'),
     ]
     ESTADO_PRODUCTO = [
         ('ACTIVO', 'Activo'),
@@ -54,18 +54,18 @@ class Producto(models.Model):
     ]
 
     id_producto = models.AutoField(primary_key=True)
-    descripcion = models.TextField(max_length=50)
+    descripcion = models.CharField(max_length=50)
     categoria = models.CharField(max_length=30, choices=CATEGORIA_PRODUCTO)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad = models.PositiveIntegerField()
+    stock = models.PositiveIntegerField(null=True)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     
     def __str__(self):
-        return f"{self.descripcion} - precio:{self.precio})"
+        return f"{self.descripcion} - precio: ${self.precio})"
 
 class Venta(models.Model):
     TIPO_VENTA = [
-        ('MINORISTA', 'Minorista'),
-        ('MAYORISTA', 'Mayorista')
+        ('MAYORISTA', 'Mayorista'),
+        ('MINORISTA', 'Minorista')
     ]
     FORMA_PAGO = [
         ('CONTADO', 'Contado'),
@@ -81,17 +81,27 @@ class Venta(models.Model):
 
     id_venta = models.AutoField(primary_key=True)
     fecha_venta = models.DateField(auto_now_add=True)
-    tipo_venta = models.CharField(max_length=30, choices=TIPO_VENTA)
+    tipo_venta = models.CharField(max_length=30, choices=TIPO_VENTA, default='Mayorista')
     forma_pago = models.CharField(max_length=30, choices=FORMA_PAGO)
     tipo_comprobante = models.CharField(max_length=30, choices=TIPO_COMPROBANTE)
     numero_comprobante = models.IntegerField(unique=True)
     observaciones = models.TextField(blank=True, null=True)
-    # empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
-    # mayorista = models.ForeignKey(Mayorista, on_delete=models.CASCADE)
-    # producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2, null=True) 
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='empleado', null=True)
+    mayorista = models.ForeignKey(Mayorista, on_delete=models.CASCADE, related_name='mayorista', null=True)
+    # producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='productos', null=True)
 
     def __str__(self):
-        return f'venta: {self.id_venta} - fecha: {self.fecha_venta}'
+        return f'Id venta: {self.id_venta} - fecha: {self.fecha_venta}'
+    
+class DetalleVenta(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.CASCADE, related_name='venta', null=True)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='producto', null=True)
+    cantidad = models.IntegerField(null=True)
+    # precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'Id detalle: {self.pk} - id venta: {self.venta.id_venta} - producto: {self.producto.descripcion}'
     
 class Caja(models.Model):
     id_caja = models.AutoField(primary_key=True)

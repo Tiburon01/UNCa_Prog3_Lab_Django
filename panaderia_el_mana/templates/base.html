@@ -34,8 +34,8 @@
         </div>        
     </nav>
     <header>
-        <div class="mx-5 px-5 pt-5">
-            <h1>Panaderia y pasteleria El Mana</h1>
+        <div class="mx-5 px-5"> <!-- pt-5 -->
+            <!-- <h1>Panaderia y pasteleria El Mana</h1> -->
             <img src="{% static 'img/Logo_El-Mana_Sin-Fondo.png' %}" alt="Logo de El Mana" title="Panaderia El Mana" width="250" height="250">
         </div>
     </header>
@@ -47,6 +47,8 @@
     <footer class="px-5 py-3">
         <p class="m-0">© Panadería y Pastelería El Mana – 2024</p>    
     </footer>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% block scripts %} 
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% endblock %}
 </body>
 </html>
