@@ -1,35 +1,137 @@
 {% extends "base.html" %}
+{% load static %}
 {% block titulo %}Registrar ventas{% endblock %}
 {% block contenido_principal %} 
 <main class="py-5">
     <div class="container mt-4">
-        <h1>Registrar una nueva venta</h1>
+        <h1 style="color: black;">Registrar una nueva venta</h1>
         <form method="POST" enctype="multipart/form-data" action="">
             {% csrf_token %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h4>Información de la venta</h4>
-                    <!-- {{ form.as_p }} -->
+                    {{ form.errors }}
                     {{ form.tipo_venta.label_tag }} {{ form.tipo_venta }}
                     {{ form.forma_pago.label_tag }} {{ form.forma_pago }}
                     {{ form.tipo_comprobante.label_tag }} {{ form.tipo_comprobante }}
                     {{ form.numero_comprobante.label_tag }} {{ form.numero_comprobante }}
                     {{ form.observaciones.label_tag }} {{ form.observaciones }}
-                </div>
+                    {{ form.precio_total.label_tag }} {{ form.precio_total }}
+                </div>                
+            </div>
+            <div class="card mb-4">
                 <div class="card-body">
                     <h4>Información del mayorista</h4>
                     {{ form.mayorista.label_tag }} {{ form.mayorista }}
                 </div>
+            </div>
+            <div class="card mb-4">
                 <div class="card-body">
-                    <h4>Información de los productos</h4>
-                    {{ form.producto.label_tag }} {{ form.producto }}
-                </div>
-                <div class="card-body py-5">
-                    <button type="submit">Registrar</button>
-                    <button type="reset">Cancelar</button>
+                    <h4>Información del empleado</h4>
+                    {{ form.empleado.label_tag }} {{ form.empleado }}
+
                 </div>
             </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Se debe poder guardar mas de un producto en detalleVenta -->
+                    <!-- Actualmente solo se puede guardar un unico producto a detalleVenta -->
+                    <h4>Información de los productos</h4>
+                    {{ detalleForm.management_form }}
+                    <div id="detalle-form-container">
+                        {% for detalle in detalleForm %}
+                            <div class="form-row">
+                                {{ detalle.errors }}
+                                {{ detalle.producto.label_tag }} {{ detalle.producto }}
+                                {{ detalle.cantidad.label_tag }} {{ detalle.cantidad }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-dark mx-5" onclick="agregarProducto()">Agregar producto</button>
+                </div>
+                <div class="card-body">
+                    <h4>Listado de ventas</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id producto</th>
+                                <th>Descripcion</th>
+                                <th>Categoria</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <!-- Se debe poder poner una lista de los productos agregados a la venta  -->
+                        <!-- Actualmente muestra todos los productos de la BD pero se debe poder ver unicamente los datos de los productos agregados a detalleVenta  -->
+                        <tbody class="tbody">
+                            {% for producto in productos %}
+                            <tr class="total-row" id="foot-tr">
+                                <td>{{ producto.id_producto }}</td>
+                                <td>{{ producto.descripcion }}</td>
+                                <td>{{ producto.categoria }}</td>
+                                <td></td> 
+                                <td>{{ producto.precio }}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pb-4">
+                <button class="btn btn-dark" type="submit">Registrar</button>
+                <button class="btn btn-dark" type="reset">Cancelar</button>
+            </div>
         </form>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Listado de ventas</h4>                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id venta</th>
+                            <th>fecha</th>
+                            <th>tipo venta</th>
+                            <th>forma pago</th>
+                            <th>tipo comprobante</th>
+                            <th>Nº comprobante</th>
+                            <th>observaciones</th>
+                            <th>Precio total</th>
+                            <th>Id empleado</th>
+                            <th>Id mayorista</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        {% for venta in ventas %}
+                        <tr class="total-row" id="foot-tr">
+                            <td>{{ venta.id_venta }}</td>
+                            <td>{{ venta.fecha_venta }}</td>
+                            <td>{{ venta.tipo_venta }}</td>
+                            <td>{{ venta.forma_pago }}</td> 
+                            <td>{{ venta.tipo_comprobante }}</td>
+                            <td>{{ venta.numero_comprobante }}</td>
+                            <td>{{ venta.observaciones }}</td>
+                            <td>{{ venta.precio_total }}</td>
+                            <td>{{ venta.empleado }}</td>
+                            <td>{{ venta.mayorista }}</td>
+                            <td>ver detalle -
+                                modificar -
+                                eliminar
+                            </td>
+                        </tr>    
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
     </div>
 </main>
+{% endblock %}
+{% block scripts %}
+    <!-- <script src="{% static 'js/registrar_ventas.js' %}"></script> -->
 {% endblock %}
