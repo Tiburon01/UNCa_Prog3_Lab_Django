@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Registrar ventas{% endblock %}
+{% block contenido_principal %} 
+<main class="py-5">
+    <div class="container mt-4">
+        <h1 style="color: black;">Registrar una nueva venta</h1>
+        <form method="POST" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <h4>Información de la venta</h4>
+                    {{ form_mod.errors }}
+                    {{ form_mod.tipo_venta.label_tag }} {{ form_mod.tipo_venta }}
+                    {{ form_mod.forma_pago.label_tag }} {{ form_mod.forma_pago }}
+                    {{ form_mod.tipo_comprobante.label_tag }} {{ form_mod.tipo_comprobante }}
+                    {{ form_mod.observaciones.label_tag }} {{ form_mod.observaciones }}
+                    {{ form_mod.precio_total.label_tag }} {{ form_mod.precio_total }}
+                </div>                
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información del mayorista</h4>
+                    {{ form_mod.mayorista.label_tag }} {{ form_mod.mayorista }}
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información del empleado</h4>
+                    {{ form_mod.empleado.label_tag }} {{ form_mod.empleado }}
+
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Se debe poder guardar mas de un producto en detalleVenta -->
+                    <!-- Actualmente solo se puede guardar un unico producto a detalleVenta -->
+                    <h4>Información de los productos</h4>
+                    {{ formset_mod.management_form }}
+                    <div id="detalle-form-container">
+                        {% for detalle in formset_mod %}
+                            <div class="form-row">
+                                {{ detalle.errors }}
+                                {{ detalle.producto.label_tag }} {{ detalle.producto }}
+                                {{ detalle.cantidad.label_tag }} {{ detalle.cantidad }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <h4>Listado de detalles</h4>                
+                     <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id detalle</th>
+                                <th>Id producto</th>
+                                <th>Descripcion</th>
+                                <th>Categoria</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                            {% for detalle in detalles %}
+                            <tr class="total-row" id="foot-tr">
+                                <td>{{ detalle.pk }}</td>
+                                <td>{{ detalle.producto.id_producto }}</td>
+                                <td>{{ detalle.producto.descripcion }}</td>
+                                <td>{{ detalle.producto.categoria }}</td>
+                                <td>{{ detalle.cantidad }}</td> 
+                                <td>{{ detalle.producto.precio }}</td>
+                                <td>
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </a><br>
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>    
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pb-4">
+                <button class="btn btn-dark" type="submit">Modificar</button>
+                <button class="btn btn-dark" type="reset">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</main>   
+{% endblock %}
