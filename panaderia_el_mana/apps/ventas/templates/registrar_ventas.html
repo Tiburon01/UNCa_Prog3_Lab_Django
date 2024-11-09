@@ -38,18 +38,18 @@
                     <!-- Actualmente solo se puede guardar un unico producto a detalleVenta -->
                     <h4>Información de los productos</h4>
                     {{ detalleForm.management_form }}
-                    <div id="detalle-form-container">
+                    <div id="detalle-formset-container">
                         {% for detalle in detalleForm %}
-                            <div class="form-row">
+                            <div class="formset-row">
                                 {{ detalle.errors }}
                                 {{ detalle.producto.label_tag }} {{ detalle.producto }}
                                 {{ detalle.cantidad.label_tag }} {{ detalle.cantidad }}
                             </div>
                         {% endfor %}
                     </div>
-                </div>
-                <div>
-                    <button class="btn btn-dark mx-5" onclick="agregarProducto()">Agregar producto</button>
+                    <div class="mt-4">
+                        <button class="btn btn-dark mx-5" id="agregar_producto">Agregar producto</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <h4>Listado de ventas</h4>

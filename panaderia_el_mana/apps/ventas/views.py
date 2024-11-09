@@ -31,19 +31,23 @@ def registrar_venta(request):
 
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)
-        formset = DetalleVentaFormSet(request.POST, request.FILES) # instance=nueva_venta   colocarlo aqui hace que intente relacionarse con el id, pero nueva_venta aun no fue guardada en la BD por ende no tiene id.
-
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             nueva_venta = form.save(commit=False) # Guarda los datos del formulario en el objeto nueva_venta. Esto permite hacer cambios adicionales antes de guardar los datos en la base de datos.
-            detalle_venta = formset.save(commit=False)
-                
+            # validaciones de ventas
             nueva_venta.save()
-            for detalle in detalle_venta:
-                detalle.venta = nueva_venta
-                detalle.save()
-
-            messages.success(request, 'Se ha agregado correctamente la venta {}'.format(nueva_venta, detalle_venta))
-            return redirect(request.path)
+            formset = DetalleVentaFormSet(request.POST, request.FILES, instance=nueva_venta) # instance=nueva_venta   colocarlo aqui hace que intente relacionarse con el id, pero nueva_venta aun no fue guardada en la BD por ende no tiene id.
+            if formset.is_valid():
+                detalle_venta = formset.save(commit=False)
+                # validaciones de productos
+                for detalle in detalle_venta:
+                    print(detalle_venta)
+                    detalle.save()
+                messages.success(request, 'Se ha agregado correctamente la venta {}'.format(nueva_venta, detalle_venta))
+                return redirect(request.path)
+            else:
+                messages.error(request, 'Hay errores en los productos agregados.')
+        else:
+            formset = DetalleVentaFormSet()
     else:
         form = VentaForm()
         formset = DetalleVentaFormSet()

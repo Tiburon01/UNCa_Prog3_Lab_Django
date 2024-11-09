@@ -48,7 +48,7 @@
 //     }
 // }
 
-
+// Funcion para anular una venta 
 function confirmCancel(url) {
     Swal.fire({
         title: 'Anular la venta',
@@ -67,3 +67,64 @@ function confirmCancel(url) {
         }
     });
 }
+
+// Para agregar productos o detalles a la una venta
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('agregar_producto');
+    const formsetContainer = document.getElementById('detalle-formset-container');
+    const totalForms = document.getElementById('id_venta-TOTAL_FORMS');
+
+    // Función para actualizar los índices de los formularios
+    function updateFormIndexes() {
+        const forms = formsetContainer.getElementsByClassName('formset-row');
+        for (let i = 0; i < forms.length; i++) {
+            const formInputs = forms[i].getElementsByTagName('input');
+            const formSelects = forms[i].getElementsByTagName('select');
+
+            for (let input of formInputs) {
+                updateElementIndex(input, 'venta', i);
+            }
+            for (let select of formSelects) {
+                updateElementIndex(select, 'venta', i);
+            }
+        }
+        totalForms.value = forms.length;
+    }
+
+    // Función para actualizar el índice de un elemento
+    function updateElementIndex(element, prefix, index) {
+        const idRegex = new RegExp(`(${prefix}-\\d+)`);
+        const replacement = `${prefix}-${index}`;
+        if (element.id) element.id = element.id.replace(idRegex, replacement);
+        if (element.name) element.name = element.name.replace(idRegex, replacement);
+    }
+
+    // Agregar nuevo formulario
+    addButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const formCount = formsetContainer.children.length;
+        if (formCount >= 10) {
+            alert("No puedes agregar más de 10 productos.");
+            return;
+        }
+        const template = formsetContainer.children[0].cloneNode(true);
+
+        // Limpiar los valores del formulario clonado
+        // template.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        template.querySelectorAll('input[type="number"]').forEach(input => input.value = null);
+        template.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+
+        formsetContainer.appendChild(template);
+        updateFormIndexes();
+    });
+
+    // Eliminar formulario
+    formsetContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete-form')) {
+            e.preventDefault();
+            const form = e.target.closest('.seccion-form');
+            form.remove();
+            updateFormIndexes();
+        }
+    });
+});
