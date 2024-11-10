@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .models import Venta, DetalleVenta, Producto
 from .forms import VentaForm, DetalleVentaForm, ModificarVentaForm, DetalleVentaFormSet
+from django.core.serializers import serialize
+import json
 
 # Lista de ventas
 
@@ -27,7 +29,7 @@ def lista_detalles(request, pk):
 
 def registrar_venta(request):
     ventas = Venta.objects.filter(estado='Registrada') #.select_related('pk')
-    productos = Producto.objects.all() #.select_related('pk')
+    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio') #.select_related('pk')
 
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)

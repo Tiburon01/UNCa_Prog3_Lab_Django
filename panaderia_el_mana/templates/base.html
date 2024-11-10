@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="icon" href="{% static 'img/Logo_El-Mana.png' %}" type="image/x-icon">
+    {% block estilo %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="icon" href="{% static 'img/Logo_El-Mana.png' %}" type="image/x-icon">
+    {% endblock %}
     <style>
         body {
             background-image: url("{% static 'img/panaderia6.jpg' %}");

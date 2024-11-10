@@ -34,8 +34,6 @@
             </div>
             <div class="card mb-4">
                 <div class="card-body">
-                    <!-- Se debe poder guardar mas de un producto en detalleVenta -->
-                    <!-- Actualmente solo se puede guardar un unico producto a detalleVenta -->
                     <h4>Información de los productos</h4>
                     {{ detalleForm.management_form }}
                     <div id="detalle-formset-container">
@@ -56,6 +54,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>Nº producto</th>
                                 <th>Id producto</th>
                                 <th>Descripcion</th>
                                 <th>Categoria</th>
@@ -64,19 +63,8 @@
                                 <th>Accion</th>
                             </tr>
                         </thead>
-                        <!-- Se debe poder poner una lista de los productos agregados a la venta  -->
-                        <!-- Actualmente muestra todos los productos de la BD pero se debe poder ver unicamente los datos de los productos agregados a detalleVenta  -->
+                        <!-- Ahora muestra la lista de productos agregados a la venta. Pero aun no pone los datos de los productos -->
                         <tbody class="tbody">
-                            {% for producto in productos %}
-                            <tr class="total-row" id="foot-tr">
-                                <td>{{ producto.id_producto }}</td>
-                                <td>{{ producto.descripcion }}</td>
-                                <td>{{ producto.categoria }}</td>
-                                <td></td> 
-                                <td>{{ producto.precio }}</td>
-                                <td></td>
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -158,6 +146,10 @@
 </main>
 {% endblock %}
 {% block scripts %}
+    <script>
+        const datosProductos = "{{ productos|safe }}";
+        console.log(datosProductos)
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static 'js/gestionar_ventas.js' %}"></script>
 {% endblock %}

@@ -60,7 +60,7 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     
     def __str__(self):
-        return f"{self.descripcion} - precio: ${self.precio})"
+        return f"{self.descripcion} - precio: $ {self.precio}"
 
 class Venta(models.Model):
     TIPO_VENTA = [
