@@ -60,7 +60,7 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     
     def __str__(self):
-        return f"{self.descripcion} - precio: ${self.precio})"
+        return f"{self.descripcion} - precio: $ {self.precio}"
 
 class Venta(models.Model):
     TIPO_VENTA = [
@@ -78,6 +78,10 @@ class Venta(models.Model):
         ('FACTURA', 'Factura'),
         ('OTRO', 'Otro')
     ]
+    ESTADO_VENTA = [
+        ('REGISTRADA', 'Registrada'),
+        ('CANCELADA', 'Cancelada'),
+    ]
 
     id_venta = models.AutoField(primary_key=True)
     fecha_venta = models.DateField(auto_now_add=True)
@@ -86,6 +90,7 @@ class Venta(models.Model):
     tipo_comprobante = models.CharField(max_length=30, choices=TIPO_COMPROBANTE)
     numero_comprobante = models.IntegerField(unique=True)
     observaciones = models.TextField(blank=True, null=True)
+    estado = models.CharField(choices=ESTADO_VENTA, default='Registrada')
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, null=True) 
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='empleado', null=True)
     mayorista = models.ForeignKey(Mayorista, on_delete=models.CASCADE, related_name='mayorista', null=True)

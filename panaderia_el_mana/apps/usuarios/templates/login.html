@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Registrar usuario{% endblock %}
+{% block contenido_principal %} 
+
+<main class="py-5">
+    <div class="container mt-4">
+        <h2 style="color: #3c3533;">Iniciar Sesión</h2>
+        <p style="color: #3c3533;">Bienvenido! Inicia sesión para acceder a nuestro sistema de gestión.</p>
+        <div class="card mb-4">
+            <div class="card-body">
+                {% if msj%}
+                <div>{{ msj}}</div>
+                {% endif%}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="">
+                        <label for="usuario" class="form-label">Nombre de Usuario</label>
+                        <div class="formulario__grupo-input">
+                            <input type="text" class="form-control" name="username" id="username" required>
+                        </div>
+                    </div>
+                    <div class="">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="formulario__grupo-input">
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="remember" class="form-check-input"> Recordarme
+                        </label>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="btn btn-dark">Iniciar sesión</button>
+                    </div>
+                </form>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">¿Nuevo usuario? Regístrate</a>
+                    <a href="#" class="list-group-item list-group-item-action">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}
