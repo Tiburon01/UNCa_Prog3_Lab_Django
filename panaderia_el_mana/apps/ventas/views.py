@@ -1,35 +1,29 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .models import Venta, DetalleVenta, Producto
-from .forms import VentaForm, DetalleVentaForm, ModificarVentaForm, DetalleVentaFormSet
+from .models import Venta, DetalleVenta
+from apps.productos.models import Producto
+from .forms import VentaForm, DesVentaForm, ModificarVentaForm, DetalleVentaFormSet
 from django.core.serializers import serialize
 import json
 
 # Lista de ventas
 
 def lista_ventas(request):
-    ventas = Venta.objects.filter(estado='Registrada') #.select_related('pk')
-
+    ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
     return render(request, 'lista_ventas.html', {'ventas': ventas})
-
-def lista_productos(request):
-    productos = Producto.objects.all() #.select_related('pk')
-
-    return render(request, 'lista_ventas.html', {'productos': productos})
 
 def lista_detalles(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
-    # detalles = DetalleVenta.objects.filter(id_venta=pk)
+    form = DesVentaForm(instance=venta)
     detalles = DetalleVenta.objects.all().filter(venta=venta)
-
-    return render(request, 'lista_detalles.html', {'detalles': detalles})
+    return render(request, 'lista_detalles.html', {'detalles': detalles, 'form':form})
 
 # Registro de formularios
 
 def registrar_venta(request):
-    ventas = Venta.objects.filter(estado='Registrada') #.select_related('pk')
-    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio') #.select_related('pk')
+    ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
+    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
 
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)
