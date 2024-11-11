@@ -1,16 +1,3 @@
-// function anularVenta(idVenta) {
-//     var form = document.createElement('form');
-//     form.method = 'POST';
-//     form.action = `/url/to/anular/${idVenta}/`; // ajusta la URL según tu ruta 
-//     var csrfToken = document.createElement('input');
-//     csrfToken.type = 'hidden';
-//     csrfToken.name = 'csrfmiddlewaretoken';
-//     csrfToken.value = '{{ csrf_token }}'; // Asegúrate de que el token CSRF esté disponible 
-//     form.appendChild(csrfToken);
-//     document.body.appendChild(form);
-//     form.submit();
-// }
-
 // Funcion para anular una venta 
 function confirmCancel(url) {
     Swal.fire({
@@ -108,6 +95,7 @@ function actualizarFormulario() {
     productos.forEach((producto, index) => {
         if(producto.options[producto.selectedIndex].text!='Seleccione'){
             // console.log('text',producto.options[producto.selectedIndex].text)
+
             // Verifica que la cantidad no esté vacía
             const cantidad = cantidades[index] ? cantidades[index].value : '';
             // Crear la fila
