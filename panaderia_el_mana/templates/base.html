@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}{% endblock %}</title>
-    {% block estilo %}
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="icon" href="{% static 'img/Logo_El-Mana.png' %}" type="image/x-icon">
-    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/Logo_El-Mana.png' %}" type="image/x-icon">
+    {% block estilo %}{% endblock %}
     <style>
         body {
             background-image: url("{% static 'img/panaderia6.jpg' %}");
@@ -28,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'productos:home' %}">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'ventas:home' %}">Ventas</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li>
                     {% if user.is_authenticated %}
