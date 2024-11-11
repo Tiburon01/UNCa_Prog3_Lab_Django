@@ -138,11 +138,6 @@ form a {
 td a {
     color: #000 !important;
 }
-#btn_anular_ventas {
-    color: none !important;
-    padding: 0 !important;
-    border: 0 !important;
-}
 
 @media (min-width: 768px) {
     .container-fluid {
