@@ -6,12 +6,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
 
-@login_required
+@login_required(login_url='usuarios:login')
 def lista_productos(request):
     productos = Producto.objects.filter(estado='ACTIVO').order_by('id_producto')
     return render(request, 'lista_productos.html', {'productos': productos})
 
-@login_required
+@login_required(login_url='usuarios:login')
 def registrar_productos(request):
     productos = Producto.objects.filter(estado='ACTIVO').order_by('id_producto')
 
@@ -29,7 +29,7 @@ def registrar_productos(request):
         form = ProductoForm()
     return render(request, 'registrar_productos.html', {'form': form, 'productos': productos})
 
-@login_required
+@login_required(login_url='usuarios:login')
 def modificar_productos(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
@@ -46,7 +46,7 @@ def modificar_productos(request, pk):
         form_mod = ProductoForm(instance=producto)
     return render(request, 'modificar_productos.html', {'form_mod': form_mod})
 
-@login_required
+@login_required(login_url='usuarios:login')
 def eliminar_productos(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
