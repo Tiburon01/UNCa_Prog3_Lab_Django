@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -5,14 +6,18 @@ from .models import Venta, DetalleVenta
 from apps.productos.models import Producto
 from .forms import VentaForm, DesVentaForm, ModificarVentaForm, DetalleVentaFormSet
 from django.core.serializers import serialize
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 import json
 
 # Lista de ventas
 
+@login_required(login_url='usuarios:login')
 def lista_ventas(request):
     ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
     return render(request, 'lista_ventas.html', {'ventas': ventas})
 
+@login_required(login_url='usuarios:login')
 def lista_detalles(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     form = DesVentaForm(instance=venta)
@@ -21,9 +26,28 @@ def lista_detalles(request, pk):
 
 # Registro de formularios
 
+def decimal_to_float(obj):
+    if isinstance(obj, Decimal):
+        return float(obj)
+    raise TypeError
+
+def productos_json(request):
+    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
+    productos_list = list(productos)  # Convertir QuerySet a una lista de diccionarios
+    return JsonResponse(productos_list, safe=False)
+
+@login_required(login_url='usuarios:login')
 def registrar_venta(request):
     ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
-    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
+    # productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
+    
+    productos_queryset = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
+    productos_dict = {producto['id_producto']: producto for producto in productos_queryset}
+    productos = {'productos':productos_dict}
+
+    productos_json = json.dumps(productos, default=decimal_to_float, indent=4)
+    print(productos_json)
+
 
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)
@@ -47,10 +71,11 @@ def registrar_venta(request):
     else:
         form = VentaForm()
         formset = DetalleVentaFormSet()
-    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas, 'productos': productos})
+    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas, 'productos': productos_json})
 
 # Modificacion de formularios
 
+@login_required(login_url='usuarios:login')
 def modificar_venta(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     if request.method == 'POST':
@@ -73,6 +98,7 @@ def modificar_venta(request, pk):
 
 # Eliminacion de formularios
 
+@login_required(login_url='usuarios:login')
 def anular_ventas(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     if request.method == 'POST':

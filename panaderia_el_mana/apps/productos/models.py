@@ -20,4 +20,4 @@ class Producto(models.Model):
     estado = models.CharField(choices=ESTADO_PRODUCTO, default='ACTIVO')
     
     def __str__(self):
-        return f"id: {self.id_producto} - producto: {self.descripcion} - precio: $ {self.precio}"
+        return f"{self.descripcion} - precio: $ {self.precio}"

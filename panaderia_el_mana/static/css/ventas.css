@@ -1,4 +1,5 @@
-#btn_anular_venta {
+#btn_anular_venta,
+.action-button{
     border: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
