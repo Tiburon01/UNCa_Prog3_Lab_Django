@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homeView, name='home'),
     path('ventas/', include('apps.ventas.urls', namespace='ventas')),
+    path('usuarios/', include('apps.usuarios.urls', namespace='usuarios')),
+    path('productos/', include('apps.productos.urls', namespace='productos')),
 
     # path('ventas/', views.lista_ventas, name='lista_ventas'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

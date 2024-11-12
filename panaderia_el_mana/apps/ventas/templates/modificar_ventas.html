@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Registrar ventas{% endblock %}
+{% block estilo %}
+    <link rel="stylesheet" href="{% static 'css/ventas.css' %}">
+{% endblock %}
+{% block contenido_principal %} 
+<main class="py-5">
+    <div class="container mt-4">
+        <h1 style="color: black;">Registrar una nueva venta</h1>
+        <form method="POST" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <h4>Información de la venta</h4>
+                    {{ form_mod.errors }}
+                    {{ form_mod.tipo_venta.label_tag }} {{ form_mod.tipo_venta }}
+                    {{ form_mod.forma_pago.label_tag }} {{ form_mod.forma_pago }}
+                    {{ form_mod.tipo_comprobante.label_tag }} {{ form_mod.tipo_comprobante }}
+                    {{ form_mod.observaciones.label_tag }} {{ form_mod.observaciones }}
+                    {{ form_mod.precio_total.label_tag }} {{ form_mod.precio_total }}
+                </div>                
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información del mayorista</h4>
+                    {{ form_mod.mayorista.label_tag }} {{ form_mod.mayorista }}
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información del empleado</h4>
+                    {{ form_mod.empleado.label_tag }} {{ form_mod.empleado }}
+
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información de los productos</h4>
+                    {{ formset_mod.management_form }}
+                    <div id="detalle-formset-container">
+                        {% for detalle in formset_mod %}
+                            <div class="formset-row">
+                                {{ detalle.errors }}
+                                {{ detalle.producto.label_tag }} {{ detalle.producto }}
+                                {{ detalle.cantidad.label_tag }} {{ detalle.cantidad }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-dark mx-5" id="agregar_producto">Agregar producto</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4>Listado de detalles</h4>                
+                     <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id detalle</th>
+                                <th>Id producto</th>
+                                <th>Descripcion</th>
+                                <th>Categoria</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pb-4">
+                <button class="btn btn-dark" type="submit">Modificar</button>
+                <button class="btn btn-dark" type="reset">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</main>   
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/gestionar_ventas.js' %}"></script>
+{% endblock %}

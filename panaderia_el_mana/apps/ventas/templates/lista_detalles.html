@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Gestion de ventas{% endblock %}
+{% block estilo %}
+    <link rel="stylesheet" href="{% static 'css/ventas.css' %}">
+{% endblock %}
+{% block contenido_principal %} 
+<main class="py-5">
+    <div class="container mt-4">
+        <h1 style="color: black;">Listar de productos de venta</h1>
+        <form method="POST" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Información de la venta</h4>
+                    {{ form.tipo_venta.label_tag }} {{ form.tipo_venta }}
+                    {{ form.forma_pago.label_tag }} {{ form.forma_pago }}
+                    {{ form.tipo_comprobante.label_tag }} {{ form.tipo_comprobante }}
+                    {{ form.numero_comprobante.label_tag }} {{ form.numero_comprobante }}
+                    {{ form.observaciones.label_tag }} {{ form.observaciones }}
+                    {{ form.precio_total.label_tag }} {{ form.precio_total }}
+                </div>                
+            </div>
+        </form>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Listado de detalles</h4>                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id detalle</th>
+                            <th>Id producto</th>
+                            <th>Descripcion</th>
+                            <th>Categoria</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        {% for detalle in detalles %}
+                        <tr class="total-row" id="foot-tr">
+                            <td>{{ detalle.pk }}</td>
+                            <td>{{ detalle.producto.id_producto }}</td>
+                            <td>{{ detalle.producto.descripcion }}</td>
+                            <td>{{ detalle.producto.categoria }}</td>
+                            <td>{{ detalle.cantidad }}</td> 
+                            <td>{{ detalle.producto.precio }}</td>
+                        </tr>    
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pb-4">
+            <button class="btn btn-dark" onclick="window.location.href = volverUrl;">Volver</button>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block scripts %}
+    <script>
+        const volverUrl = "{% url 'ventas:home' %}";
+    </script>
+{% endblock %}

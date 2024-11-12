@@ -135,6 +135,9 @@ form input.btn:active, input.btn:hover {
 form a {
     color: #784B2A;
 }
+td a {
+    color: #000 !important;
+}
 
 @media (min-width: 768px) {
     .container-fluid {
