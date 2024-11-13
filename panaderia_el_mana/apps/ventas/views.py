@@ -26,11 +26,6 @@ def lista_detalles(request, pk):
 
 # Registro de formularios
 
-def decimal_to_float(obj):
-    if isinstance(obj, Decimal):
-        return float(obj)
-    raise TypeError
-
 def productos_json(request):
     productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
     productos_list = list(productos)  # Convertir QuerySet a una lista de diccionarios
@@ -39,16 +34,7 @@ def productos_json(request):
 @login_required(login_url='usuarios:login')
 def registrar_venta(request):
     ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
-    # productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
-    
-    productos_queryset = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
-    productos_dict = {producto['id_producto']: producto for producto in productos_queryset}
-    productos = {'productos':productos_dict}
-
-    productos_json = json.dumps(productos, default=decimal_to_float, indent=4)
-    print(productos_json)
-
-
+    productos = Producto.objects.all()
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)
         if form.is_valid():
@@ -58,10 +44,16 @@ def registrar_venta(request):
             formset = DetalleVentaFormSet(request.POST, request.FILES, instance=nueva_venta) # instance=nueva_venta   colocarlo aqui hace que intente relacionarse con el id, pero nueva_venta aun no fue guardada en la BD por ende no tiene id.
             if formset.is_valid():
                 detalle_venta = formset.save(commit=False)
+                precio_total = 0
                 # validaciones de productos
                 for detalle in detalle_venta:
-                    print(detalle_venta)
-                    detalle.save()
+                    for producto in productos:
+                        if producto.id_producto == detalle.producto.id_producto:
+                            subtotal = detalle.cantidad * producto.precio  # Calcula subtotal del producto
+                            precio_total += subtotal  # Agrega el subtotal al precio total
+                    detalle.save()  # Guarda el detalle en la base de datos
+                nueva_venta.precio_total = precio_total  # Asigna el precio total calculado a la venta
+                nueva_venta.save()  # Guarda la venta con su nuevo valor de precio_total en la base de datos
                 messages.success(request, 'Se ha agregado correctamente la venta {}'.format(nueva_venta, detalle_venta))
                 return redirect(request.path)
             else:
@@ -71,7 +63,7 @@ def registrar_venta(request):
     else:
         form = VentaForm()
         formset = DetalleVentaFormSet()
-    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas, 'productos': productos_json})
+    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas})
 
 # Modificacion de formularios
 

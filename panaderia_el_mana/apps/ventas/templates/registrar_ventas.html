@@ -19,7 +19,6 @@
                     {{ form.tipo_comprobante.label_tag }} {{ form.tipo_comprobante }}
                     {{ form.numero_comprobante.label_tag }} {{ form.numero_comprobante }}
                     {{ form.observaciones.label_tag }} {{ form.observaciones }}
-                    {{ form.precio_total.label_tag }} {{ form.precio_total }}
                 </div>                
             </div>
             <div class="card mb-4">
@@ -145,13 +144,6 @@
 </main>
 {% endblock %}
 {% block scripts %}
-    <!-- <script>
-        // const productos = '{{ productos|safe }}'
-        // let nproductos = productos.slice(1, -1);
-        // console.log(nproductos)
-        // const datosProductos = JSON.parse("{{ productos|safe }}");
-        // console.log(datosProductos)
-    </script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static 'js/gestionar_ventas.js' %}"></script>
 {% endblock %}
