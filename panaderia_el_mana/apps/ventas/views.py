@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -5,14 +6,18 @@ from .models import Venta, DetalleVenta
 from apps.productos.models import Producto
 from .forms import VentaForm, DesVentaForm, ModificarVentaForm, DetalleVentaFormSet
 from django.core.serializers import serialize
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 import json
 
 # Lista de ventas
 
+@login_required(login_url='usuarios:login')
 def lista_ventas(request):
     ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
     return render(request, 'lista_ventas.html', {'ventas': ventas})
 
+@login_required(login_url='usuarios:login')
 def lista_detalles(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     form = DesVentaForm(instance=venta)
@@ -21,10 +26,15 @@ def lista_detalles(request, pk):
 
 # Registro de formularios
 
+def productos_json(request):
+    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
+    productos_list = list(productos)  # Convertir QuerySet a una lista de diccionarios
+    return JsonResponse(productos_list, safe=False)
+
+@login_required(login_url='usuarios:login')
 def registrar_venta(request):
     ventas = Venta.objects.filter(estado='REGISTRADA').order_by('-id_venta')
-    productos = Producto.objects.all().values('id_producto', 'descripcion', 'categoria', 'precio')
-
+    productos = Producto.objects.all()
     if request.method == 'POST':
         form = VentaForm(request.POST, request.FILES)
         if form.is_valid():
@@ -34,10 +44,16 @@ def registrar_venta(request):
             formset = DetalleVentaFormSet(request.POST, request.FILES, instance=nueva_venta) # instance=nueva_venta   colocarlo aqui hace que intente relacionarse con el id, pero nueva_venta aun no fue guardada en la BD por ende no tiene id.
             if formset.is_valid():
                 detalle_venta = formset.save(commit=False)
+                precio_total = 0
                 # validaciones de productos
                 for detalle in detalle_venta:
-                    print(detalle_venta)
-                    detalle.save()
+                    for producto in productos:
+                        if producto.id_producto == detalle.producto.id_producto:
+                            subtotal = detalle.cantidad * producto.precio  # Calcula subtotal del producto
+                            precio_total += subtotal  # Agrega el subtotal al precio total
+                    detalle.save()  # Guarda el detalle en la base de datos
+                nueva_venta.precio_total = precio_total  # Asigna el precio total calculado a la venta
+                nueva_venta.save()  # Guarda la venta con su nuevo valor de precio_total en la base de datos
                 messages.success(request, 'Se ha agregado correctamente la venta {}'.format(nueva_venta, detalle_venta))
                 return redirect(request.path)
             else:
@@ -47,10 +63,11 @@ def registrar_venta(request):
     else:
         form = VentaForm()
         formset = DetalleVentaFormSet()
-    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas, 'productos': productos})
+    return render(request, 'registrar_ventas.html', {'form': form, 'detalleForm': formset, 'ventas': ventas})
 
 # Modificacion de formularios
 
+@login_required(login_url='usuarios:login')
 def modificar_venta(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     if request.method == 'POST':
@@ -73,6 +90,7 @@ def modificar_venta(request, pk):
 
 # Eliminacion de formularios
 
+@login_required(login_url='usuarios:login')
 def anular_ventas(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
     if request.method == 'POST':

@@ -92,7 +92,7 @@ class Venta(models.Model):
     numero_comprobante = models.IntegerField(unique=True)
     observaciones = models.TextField(blank=True, null=True)
     estado = models.CharField(choices=ESTADO_VENTA, default='REGISTRADA')
-    precio_total = models.DecimalField(max_digits=10, decimal_places=2, null=True) 
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True,null=True) 
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='empleado', null=True)
     mayorista = models.ForeignKey(Mayorista, on_delete=models.CASCADE, related_name='mayorista', null=True)
     # producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='productos', null=True)

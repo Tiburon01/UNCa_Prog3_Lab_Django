@@ -9,4 +9,5 @@ urlpatterns = [
     path('', views.registrar_venta, name='home'),
     path('modificar/<int:pk>/', views.modificar_venta, name='modificar'),
     path('anular/<int:pk>/', views.anular_ventas, name='anular'),
+    path('api/productos/', views.productos_json, name='productos_json'),
 ]
