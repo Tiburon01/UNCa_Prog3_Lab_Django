@@ -79,13 +79,16 @@
             </div>
             <div class="pb-4">
                 <button class="btn btn-dark" type="submit">Modificar</button>
-                <button class="btn btn-dark" type="reset">Cancelar</button>
+                <button class="btn btn-dark" type="reset" onclick='window.location.href = volverUrl';>Cancelar</button>
             </div>
         </form>
     </div>
 </main>   
 {% endblock %}
 {% block scripts %}
+    <script>
+        const volverUrl = "{% url 'ventas:home' %}";
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static 'js/gestionar_ventas.js' %}"></script>
 {% endblock %}

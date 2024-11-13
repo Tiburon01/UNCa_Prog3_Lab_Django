@@ -24,6 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const formsetContainer = document.getElementById('detalle-formset-container');
     const totalForms = document.getElementById('id_venta-TOTAL_FORMS');
 
+    if (formsetContainer.children.length > 1) {
+        const templateAnt = formsetContainer.children[0].cloneNode(true);
+        Array.from(formsetContainer.children).forEach(form => {
+            form.style.display = 'none';
+        });
+        templateAnt.querySelectorAll('input[type="number"]').forEach(input => input.value = null);
+        templateAnt.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        formsetContainer.appendChild(templateAnt);
+        updateFormIndexes();
+        actualizarFormulario();
+    }
+
     // Función para actualizar los índices de los formularios
     function updateFormIndexes() {
         const forms = formsetContainer.getElementsByClassName('formset-row');
@@ -123,7 +135,7 @@ function actualizarFormulario() {
             fetch('/ventas/api/productos')
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);  // Aquí puedes manejar el JSON de los productos
+                    // console.log(data);  // Aquí puedes manejar el JSON de los productos
                     // Procesar y mostrar los datos en tu frontend
                     for (i=0; i<data.length;i++){
                         if(data[i].id_producto === resultado) {
