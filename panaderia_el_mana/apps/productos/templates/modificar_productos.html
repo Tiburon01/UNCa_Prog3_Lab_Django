@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Modificar productos{% endblock %}
+{% block contenido_principal %} 
+
+<main class="py-5">
+    <div class="container mt-4">
+        <h1 style="color: black;">Modificar un nuevo producto</h1>
+        <form method="POST" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <h4>Información del producto</h4>
+                    {{ form_mod.errors }}
+                    {{ form_mod.descripcion.label_tag }} {{ form_mod.descripcion }}
+                    {{ form_mod.categoria.label_tag }} {{ form_mod.categoria }}
+                    {{ form_mod.stock.label_tag }} {{ form_mod.stock }}
+                    {{ form_mod.precio.label_tag }} {{ form_mod.precio }}
+                </div>
+            </div>
+            <div class="pb-4">
+                <button class="btn btn-dark" type="submit">Modificar</button>
+                <button class="btn btn-dark" type="reset">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}

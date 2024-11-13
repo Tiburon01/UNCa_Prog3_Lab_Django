@@ -1,0 +1,16 @@
+#btn_anular_producto {
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+}
+.icon_contenedor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.iconos-contenedor a,
+.iconos-contenedor form {
+    display: inline-block;
+    margin: 0;
+}

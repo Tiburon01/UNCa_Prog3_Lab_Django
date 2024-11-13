@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
@@ -25,3 +26,22 @@ class Empleado(models.Model):
         verbose_name = 'Empleado'
         verbose_name_plural = 'Empleados'
         ordering = ['apellido', 'nombre']
+
+
+# class Usuario(AbstractUser):
+#     PERFILES_USUARIO = [
+#     ('Administrador', 'Administrador'),
+#     ('Vendedor', 'Vendedor'),
+#     ('Almacenero', 'Almacenero'),
+#     ('Gerente', 'Gerente'),
+#     ]
+
+#     cuit = models.CharField(max_length=11, unique=True)
+#     direccion = models.CharField(max_length=100, blank=True)
+#     telefono = models.CharField(max_length=20, blank=True)
+#     fecha_nacimiento = models.DateField(blank=True,null=True)
+#     fecha_ingreso = models.DateField(blank=True,null=True)
+#     perfil_usuario = models.CharField(choices=PERFILES_USUARIO)
+
+#     def __str__(self):
+#         return f"Empleado cuit: {self.cuit} - perfil: {self.perfil_usuario}"

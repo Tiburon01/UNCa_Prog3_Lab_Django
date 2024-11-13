@@ -1,4 +1,5 @@
 from django.db import models
+from apps.productos.models import Producto 
 
 # Create your models here.
 
@@ -43,24 +44,24 @@ class Mayorista(models.Model):
     def __str__(self):
         return self.razon_social
     
-class Producto(models.Model):
-    CATEGORIA_PRODUCTO = [
-        ('PANIFICACION', 'Panificación'),
-        ('PASTELERIA', 'Pastelería'),
-    ]
-    ESTADO_PRODUCTO = [
-        ('ACTIVO', 'Activo'),
-        ('INACTIVO', 'Inactivo')
-    ]
+# class Producto(models.Model):
+#     CATEGORIA_PRODUCTO = [
+#         ('PANIFICACION', 'Panificación'),
+#         ('PASTELERIA', 'Pastelería'),
+#     ]
+#     ESTADO_PRODUCTO = [
+#         ('ACTIVO', 'Activo'),
+#         ('INACTIVO', 'Inactivo')
+#     ]
 
-    id_producto = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=50)
-    categoria = models.CharField(max_length=30, choices=CATEGORIA_PRODUCTO)
-    stock = models.PositiveIntegerField(null=True)
-    precio = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+#     id_producto = models.AutoField(primary_key=True)
+#     descripcion = models.CharField(max_length=50)
+#     categoria = models.CharField(max_length=30, choices=CATEGORIA_PRODUCTO)
+#     stock = models.PositiveIntegerField(null=True)
+#     precio = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     
-    def __str__(self):
-        return f"{self.descripcion} - precio: $ {self.precio}"
+#     def __str__(self):
+#         return f"{self.descripcion} - precio: $ {self.precio}"
 
 class Venta(models.Model):
     TIPO_VENTA = [
@@ -90,8 +91,8 @@ class Venta(models.Model):
     tipo_comprobante = models.CharField(max_length=30, choices=TIPO_COMPROBANTE)
     numero_comprobante = models.IntegerField(unique=True)
     observaciones = models.TextField(blank=True, null=True)
-    estado = models.CharField(choices=ESTADO_VENTA, default='Registrada')
-    precio_total = models.DecimalField(max_digits=10, decimal_places=2, null=True) 
+    estado = models.CharField(choices=ESTADO_VENTA, default='REGISTRADA')
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True,null=True) 
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='empleado', null=True)
     mayorista = models.ForeignKey(Mayorista, on_delete=models.CASCADE, related_name='mayorista', null=True)
     # producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='productos', null=True)
