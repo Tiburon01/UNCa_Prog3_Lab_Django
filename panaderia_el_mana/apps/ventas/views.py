@@ -70,13 +70,26 @@ def registrar_venta(request):
 @login_required(login_url='usuarios:login')
 def modificar_venta(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
+    productos = Producto.objects.all()
     if request.method == 'POST':
         form_mod = ModificarVentaForm(request.POST, request.FILES, instance=venta)
+        formset_mod = DetalleVentaFormSet(request.POST, instance=venta)
         if form_mod.is_valid():
             form_mod.save()
-            formset_mod = DetalleVentaFormSet(request.POST, request.FILES, instance=venta)
             if formset_mod.is_valid():
-                formset_mod.save()
+                detalle_venta = formset_mod.save(commit=False)
+                precio_total = 0
+                # validaciones de productos
+                for detalle in detalle_venta:
+                    for producto in productos:
+                        if producto.id_producto == detalle.producto.id_producto:
+                            subtotal = detalle.cantidad * producto.precio  # Calcula subtotal del producto
+                            precio_total += subtotal  # Agrega el subtotal al precio total
+                    detalle.save()  # Guarda el detalle en la base de datos
+                form_mod.precio_total = precio_total  # Asigna el precio total calculado a la venta
+                form_mod.save()  # Guarda la venta con su nuevo valor de precio_total en la base de datos
+
+                # formset_mod.save()
                 messages.success(request, 'Se ha actualizado correctamente la venta')
                 return redirect(reverse('ventas:home'))
             else:
