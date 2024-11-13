@@ -29,7 +29,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'productos:home' %}">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'ventas:home' %}">Ventas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li> -->
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'usuarios:logout' %}">Cerrar Sesión</a></li>
                     {% else %}

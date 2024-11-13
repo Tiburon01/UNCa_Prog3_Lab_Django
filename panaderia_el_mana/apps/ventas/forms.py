@@ -140,8 +140,8 @@ class ModificarVentaForm(forms.ModelForm):
                 'rows': 3
             }),
             'precio_total': forms.NumberInput(attrs={
-                'class': 'form-control'
-
+                'class': 'form-control',
+                'disabled': 'disabled'
             }),
             'empleado': forms.Select(attrs={
                 'class': 'form-select'
